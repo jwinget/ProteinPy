@@ -12,19 +12,31 @@ class Gpdbcleaner:
     def __init__(self, root):
         '''Set up the TKinter window'''
         frame = Frame(root)
-        frame.pack()
+        frame.pack(fill=BOTH)
 
         self.openbutton = Button(frame, text='Select PDB file', command=self.openfile)
-        self.openbutton.pack(side=LEFT)
+        self.openbutton.grid(row=0, sticky=W)
+
+	self.openfilename = StringVar()
+	self.openfilename.set('')
+
+	self.openfile = Label(frame, width=50, relief=SUNKEN, anchor=W, textvariable=self.openfilename)
+	self.openfile.grid(row=0, column=1, sticky=W)
+
+	self.savefilename = StringVar()
+	self.savefilename.set('')
 
         self.savebutton = Button(frame, text='Save As', command=self.asksaveasfilename)
-        self.savebutton.pack(side=LEFT)
+        self.savebutton.grid(row=1, sticky=W)
+
+	self.savefile = Label(frame, width=50, relief=SUNKEN, anchor=W, textvariable=self.savefilename)
+	self.savefile.grid(row=1, column=1, sticky=W)
 
         self.runbutton = Button(frame, text='Run', fg='green', command=self.run)
-        self.runbutton.pack(side=TOP)
+        self.runbutton.grid(row=2, sticky=W)
 
         self.quitbutton = Button(frame, text='Quit', fg='red', command=frame.quit)
-        self.quitbutton.pack(side=LEFT)
+        self.quitbutton.grid(row=2, column=1, sticky=W)
 
     def openfile(self):
 	self.askopenfilename()
@@ -33,11 +45,13 @@ class Gpdbcleaner:
     def askopenfilename(self):
         '''Get the name of the PDB file to be cleaned up'''
         dirtyfile = tkFileDialog.askopenfilename()
+	self.openfilename.set(dirtyfile)
         return filelist.append(dirtyfile)
 
     def asksaveasfilename(self):
         '''Get the save as file name'''
         cleanfile = tkFileDialog.asksaveasfilename()
+	self.savefilename.set(cleanfile)
         return filelist.append(cleanfile)
 
     def getrecordnames(self):
@@ -73,6 +87,7 @@ class Gpdbcleaner:
         outputfile.close()
 
 root = Tk()
+root.title('PDB cleaner')
 
 gpdbcleaner = Gpdbcleaner(root)
 
