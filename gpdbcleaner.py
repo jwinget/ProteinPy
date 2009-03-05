@@ -5,7 +5,6 @@
 import sys, re, tkFileDialog, string
 from Tkinter import *
 
-filelist=[]
 recordnames = []
 
 class Gpdbcleaner:
@@ -46,17 +45,16 @@ class Gpdbcleaner:
         '''Get the name of the PDB file to be cleaned up'''
         dirtyfile = tkFileDialog.askopenfilename()
 	self.openfilename.set(dirtyfile)
-        return filelist.append(dirtyfile)
 
     def asksaveasfilename(self):
         '''Get the save as file name'''
         cleanfile = tkFileDialog.asksaveasfilename()
 	self.savefilename.set(cleanfile)
-        return filelist.append(cleanfile)
 
     def getrecordnames(self):
 	'''Create a list of all the record names in the PDB file'''
-        inputfile = open(filelist[0], 'r')
+	filetoopen = self.openfilename.get()
+        inputfile = open(filetoopen, 'r')
 	lines = inputfile.readlines()
 	for line in lines:
 	    recordmatch = re.match('^\S*', line)
@@ -70,7 +68,8 @@ class Gpdbcleaner:
     def run(self):
         '''Perform the cleanup'''
         atomrecords=[]
-        inputfile = open(filelist[0], 'r')
+	filetoopen = self.openfilename.get()
+        inputfile = open(filetoopen, 'r')
         lines = inputfile.readlines()
         for line in lines:
             match = re.search('^ATOM', line)
@@ -82,7 +81,8 @@ class Gpdbcleaner:
         inputfile.close()
 
         # Write out the records
-        outputfile = open(filelist[1], 'w')
+	filetowrite = self.savefilename.get()
+        outputfile = open(filetowrite, 'w')
         outputfile.writelines(atomrecords)
         outputfile.close()
 
