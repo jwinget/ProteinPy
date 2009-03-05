@@ -16,20 +16,20 @@ class Gpdbcleaner:
         self.openbutton = Button(frame, text='Select PDB file', command=self.openfile)
         self.openbutton.grid(row=0, sticky=W)
 
-	self.openfilename = StringVar()
-	self.openfilename.set('')
+        self.openfilename = StringVar()
+        self.openfilename.set('')
 
-	self.openfile = Label(frame, width=50, relief=SUNKEN, anchor=W, textvariable=self.openfilename)
-	self.openfile.grid(row=0, column=1, sticky=W)
+        self.openfile = Label(frame, width=50, relief=SUNKEN, anchor=W, textvariable=self.openfilename)
+        self.openfile.grid(row=0, column=1, sticky=W)
 
-	self.savefilename = StringVar()
-	self.savefilename.set('')
+        self.savefilename = StringVar()
+        self.savefilename.set('')
 
         self.savebutton = Button(frame, text='Save As', command=self.asksaveasfilename)
         self.savebutton.grid(row=1, sticky=W)
 
-	self.savefile = Label(frame, width=50, relief=SUNKEN, anchor=W, textvariable=self.savefilename)
-	self.savefile.grid(row=1, column=1, sticky=W)
+        self.savefile = Label(frame, width=50, relief=SUNKEN, anchor=W, textvariable=self.savefilename)
+        self.savefile.grid(row=1, column=1, sticky=W)
 
         self.runbutton = Button(frame, text='Run', fg='green', command=self.run)
         self.runbutton.grid(row=2, sticky=W)
@@ -38,22 +38,22 @@ class Gpdbcleaner:
         self.quitbutton.grid(row=2, column=1, sticky=W)
 
     def openfile(self):
-	self.askopenfilename()
-	self.getrecordnames()
+        self.askopenfilename()
+        self.getrecordnames()
 
     def askopenfilename(self):
         '''Get the name of the PDB file to be cleaned up'''
         dirtyfile = tkFileDialog.askopenfilename()
-	self.openfilename.set(dirtyfile)
+        self.openfilename.set(dirtyfile)
 
     def asksaveasfilename(self):
         '''Get the save as file name'''
         cleanfile = tkFileDialog.asksaveasfilename()
-	self.savefilename.set(cleanfile)
+        self.savefilename.set(cleanfile)
 
     def getrecordnames(self):
-	'''Create a list of all the record names in the PDB file'''
-	filetoopen = self.openfilename.get()
+        '''Create a list of all the record names in the PDB file'''
+        filetoopen = self.openfilename.get()
         inputfile = open(filetoopen, 'r')
 	lines = inputfile.readlines()
 	for line in lines:
@@ -81,7 +81,7 @@ class Gpdbcleaner:
         inputfile.close()
 
         # Write out the records
-	filetowrite = self.savefilename.get()
+        filetowrite = self.savefilename.get()
         outputfile = open(filetowrite, 'w')
         outputfile.writelines(atomrecords)
         outputfile.close()
