@@ -5,8 +5,6 @@
 import sys, re, tkFileDialog, string
 from Tkinter import *
 
-recordnames = []
-
 class Gpdbcleaner:
     def __init__(self, root):
         '''Set up the TKinter window'''
@@ -43,27 +41,49 @@ class Gpdbcleaner:
 
     def askopenfilename(self):
         '''Get the name of the PDB file to be cleaned up'''
-        dirtyfile = tkFileDialog.askopenfilename()
+        dirtyfile = tkFileDialog.askopenfilename(filetypes=[('Protein Databank', '*.pdb')])
         self.openfilename.set(dirtyfile)
 
     def asksaveasfilename(self):
         '''Get the save as file name'''
-        cleanfile = tkFileDialog.asksaveasfilename()
+        cleanfile = tkFileDialog.asksaveasfilename(filetypes=[('Protein Databank','*.pdb')])
         self.savefilename.set(cleanfile)
 
     def getrecordnames(self):
         '''Create a list of all the record names in the PDB file'''
+        recordnames = []
         filetoopen = self.openfilename.get()
         inputfile = open(filetoopen, 'r')
         lines = inputfile.readlines()
         for line in lines:
             recordmatch = re.match('^\S*', line)
             record = recordmatch.group()
-	        if record in recordnames:
+            if record in recordnames:
 	            pass
-	        else:
-	            recordnames.append(record)
+            else:
+                recordnames.append(record)
         inputfile.close()
+        recordlistbox = Toplevel()
+        recordlistbox.title('Select records to save')
+        recordcounter=0
+        colcounter=0
+        for record in recordnames:
+            if recordcounter <= 10:
+                rownum=recordcounter
+                colnum=colcounter
+            elif recordcounter > 10:
+                colcounter += 1
+                recordcounter = 0
+                rownum=recordcounter
+                colnum=colcounter
+            self.recordvar = StringVar()
+            self.recordvar.set(record)
+            self.checkbutton = Checkbutton(recordlistbox, textvariable=self.recordvar, command=self.recordselect)                
+            self.checkbutton.grid(row=recordcounter, column=colcounter, sticky=W)
+            recordcounter += 1                
+        
+    def recordselect(self):
+        pass
 
     def run(self):
         '''Perform the cleanup'''
