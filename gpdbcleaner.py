@@ -55,20 +55,20 @@ class Gpdbcleaner:
         '''Create a list of all the record names in the PDB file'''
         filetoopen = self.openfilename.get()
         inputfile = open(filetoopen, 'r')
-	lines = inputfile.readlines()
-	for line in lines:
-	    recordmatch = re.match('^\S*', line)
-	    record = recordmatch.group()
-	    if record in recordnames:
-	        pass
-	    else:
-	        recordnames.append(record)
-	inputfile.close()
+        lines = inputfile.readlines()
+        for line in lines:
+            recordmatch = re.match('^\S*', line)
+            record = recordmatch.group()
+	        if record in recordnames:
+	            pass
+	        else:
+	            recordnames.append(record)
+        inputfile.close()
 
     def run(self):
         '''Perform the cleanup'''
         atomrecords=[]
-	filetoopen = self.openfilename.get()
+        filetoopen = self.openfilename.get()
         inputfile = open(filetoopen, 'r')
         lines = inputfile.readlines()
         for line in lines:
